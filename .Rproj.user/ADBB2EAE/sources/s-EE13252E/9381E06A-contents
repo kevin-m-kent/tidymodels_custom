@@ -88,9 +88,6 @@ bake.step_isofor <- function(object, new_data, ...) {
   tibble::as_tibble(new_data)
 }
 
-lsf.str("package:dials", pattern = "tree_depth")
-        
-
 tunable.step_isofor <- function (x, ...) {
   tibble::tibble(
     name = c("sample_size", "max_depth"),
@@ -120,7 +117,7 @@ wf_linear <- workflow() %>%
 
 iso_param <- parameters(wf_linear)
 
-iso_param <- iso_param %>%
+iso_param <- iso_param %>% 
   update(sample_size = sample_size(c(1, 24)), max_depth = tree_depth(c(1, 5)))
 
 tuned_mod <- wf_linear %>%
