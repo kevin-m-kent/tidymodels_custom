@@ -79,8 +79,7 @@ prep.step_isofor <- function(x, training, info = NULL, ...) {
 }
 
 bake.step_isofor <- function(object, new_data, ...) {
-  ## For illustration (and not speed), we will loop through the affected variables
-
+  
   iso_mod <- object$iso_mod
   
   new_data$if_score <- iso_mod$predict(new_data)$anomaly_score
