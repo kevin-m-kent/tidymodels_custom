@@ -58,7 +58,7 @@ prep.step_isofor <- function(x, training, info = NULL, ...) {
 
   col_names <- terms_select(terms = x$terms, info = info) 
   
-  iso_mod <- isolationForest$new(sample_size = x$sample_size, num_trees = x$num_trees, max_depth = x$max_depth, 
+  iso_mod <- solitude::isolationForest$new(sample_size = x$sample_size, num_trees = x$num_trees, max_depth = x$max_depth, 
                                      nproc = x$options$nproc, replace = x$options$replace, seed = x$options$seed,
                                  respect_unordered_factors = x$options$respect_unordered_factors)
 
