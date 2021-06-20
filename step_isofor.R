@@ -88,40 +88,25 @@ bake.step_isofor <- function(object, new_data, ...) {
   tibble::as_tibble(new_data)
 }
 
+isofor_tree_depth <- function(range = c(1L, 15L), trans = NULL) {
+  new_quant_param(
+    type = "integer",
+    range = range,
+    inclusive = c(TRUE, TRUE),
+    trans = trans,
+    label = c(sub_classes = "Isolation Forest Tree Depth"),
+    finalize = NULL
+  )
+}
+
 tunable.step_isofor <- function (x, ...) {
   tibble::tibble(
     name = c("sample_size", "max_depth"),
-    call_info = list(list(pkg = "dials", fun = "sample_size"), list(pkg = "dials", fun = "tree_depth")),
+    call_info = list(list(pkg = "dials", fun = "sample_size"), list(fun = "isofor_tree_depth")),
     source = "recipe",
     component = "step_isofor",
     component_id = x$id
   )
 }
 
-splits <- initial_split(mtcars)
-train <- training(splits)
-test <- testing(splits)
-resamples <- bootstraps(train, times = 5)
-
-rec_obj <- 
-  recipe(mpg ~ ., data = mtcars) %>%
-  step_dummy(all_nominal_predictors()) %>%
-  step_isofor(all_predictors(), sample_size = tune(), max_depth = tune())
-
-lm_mod <- linear_reg() %>%
-  set_engine("lm") 
-
-wf_linear <- workflow() %>%
-  add_recipe(rec_obj) %>%
-  add_model(lm_mod)
-
-iso_param <- parameters(wf_linear)
-
-iso_param <- iso_param %>% 
-  update(sample_size = sample_size(c(1, 24)), max_depth = tree_depth(c(1, 5)))
-
-tuned_mod <- wf_linear %>%
-  tune_grid(resamples = resamples, param_info = iso_param)
-
-select_best(tuned_mod)
 
