@@ -99,10 +99,21 @@ isofor_tree_depth <- function(range = c(1L, 15L), trans = NULL) {
   )
 }
 
+isofor_sample_size <- function(range = c(unknown(), unknown()), trans = NULL) {
+  new_quant_param(
+    type = "integer",
+    range = range,
+    inclusive = c(TRUE, TRUE),
+    trans = trans,
+    label = c(sub_classes = "Isolation Forest Tree Depth"),
+    finalize = NULL
+  )
+}
+
 tunable.step_isofor <- function (x, ...) {
   tibble::tibble(
     name = c("sample_size", "max_depth"),
-    call_info = list(list(pkg = "dials", fun = "sample_size"), list(fun = "isofor_tree_depth")),
+    call_info = list(list(fun = "isofor_sample_size"), list(fun = "isofor_tree_depth")),
     source = "recipe",
     component = "step_isofor",
     component_id = x$id
